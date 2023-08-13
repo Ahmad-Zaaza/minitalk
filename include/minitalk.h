@@ -6,7 +6,7 @@
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:02:06 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/13 23:17:57 by azaaza           ###   ########.fr       */
+/*   Updated: 2023/08/14 00:44:44 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,7 @@
 #include <unistd.h>
 
 void send_signal(int *bits, int pid);
+int is_numeric(const char *str);
+int ft_atoi(const char *str);
 
 #endif

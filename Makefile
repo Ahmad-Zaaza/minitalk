@@ -1,12 +1,13 @@
 
 PRINTF=libftprintf.a
 
-CLIENT_FILES = client.c common.c
+
+CLIENT_FILES = client.c common.c utils.c
 CLIENT_SRC = $(addprefix $(SRC_DIR), $(CLIENT_FILES))
 CLIENT_ARTIFACT = client
 CLIENT_OBJ = $(CLIENT_SRC:.c=.o)
 
-SERVER_FILES = server.c common.c
+SERVER_FILES = server.c common.c utils.c
 SERVER_SRC = $(addprefix $(SRC_DIR), $(SERVER_FILES))
 SERVER_ARTIFACT = server
 SERVER_OBJ = $(SERVER_SRC:.c=.o)
@@ -28,8 +29,6 @@ $(CLIENT_ARTIFACT) : $(CLIENT_SRC)
 
 $(SERVER_ARTIFACT) : $(SERVER_SRC)
 	$(CC) $(CFLAGS) ft_printf/$(PRINTF) -o $@ $^
-
-
 
 clean: 
 	$(RM) $(CLIENT_ARTIFACT) $(SERVER_ARTIFACT)

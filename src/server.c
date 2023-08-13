@@ -6,62 +6,61 @@
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 22:33:15 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/13 23:17:57 by azaaza           ###   ########.fr       */
+/*   Updated: 2023/08/14 01:35:06 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-volatile int i = 0;
+int byte = 0;
 
-static void ft_btoa(int sig) {
-  static int bit;
-
-  if (sig == SIGUSR1)
-    i = (i << 1);
-  if (sig == SIGUSR2)
-    i = (i << 1) | 1;
-
-  bit++;
-  if (bit == 8) {
-    ft_printf("%c", i);
-    bit = 0;
-    i = 0;
-  }
+void send_acknowledgement(int pid) {
+  if (kill(pid, SIGUSR1) == -1)
+    ft_printf("🚨 Error: cannot send acknowledgement\n");
+  exit(1);
 }
 
-static void signal_handler(int sig) {
+void handle_signal(int sig, siginfo_t *siginfo, void *context) {
+  static int bit_count;
 
-  if (sig == SIGUSR1) {
-    ft_printf("SIGUSR1 received %d,...\n", sig);
-  }
-  if (sig == SIGUSR2) {
-    ft_printf("SIGUSR2 received %d,...\n", sig);
+  (void)context;
+  if (sig == SIGUSR1)
+    byte = (byte << 1);
+  if (sig == SIGUSR2)
+    byte = (byte << 1) | 1;
+
+  bit_count++;
+  // if byte is complete
+  if (bit_count == 8) {
+    // If the client sends a null byte, it means that the message is complete
+    if (byte == '\0')
+      send_acknowledgement(siginfo->si_pid); // si_pid is the client's pid
+    ft_printf("%c", byte);
+    // reset bit_count and i
+    bit_count = 0;
+    byte = 0;
   }
 }
 
 int main(void) {
-
-  pid_t pid;
   struct sigaction sa;
+  sa.sa_flags = SA_SIGINFO;
+  sa.sa_sigaction = handle_signal;
 
-  pid = getpid();
-  sa.sa_handler = ft_btoa;
-  sa.sa_flags = SA_RESTART;
-  sigemptyset(&sa.sa_mask);
+  ft_printf("Server PID: %d\n", getpid());
+  ft_printf("📨 Ready to listen...\n");
 
-  ft_printf("%d\n", pid);
-  ft_printf("Server started...\n");
-  while (1) {
-    if (sigaction(SIGUSR1, &sa, NULL) == -1) {
-      ft_printf("Error: cannot handle Signal\n");
-      exit(1);
-    }
-    if (sigaction(SIGUSR2, &sa, NULL) == -1) {
-      ft_printf("Error: cannot handle Signal\n");
-      exit(1);
-    }
+  if (sigaction(SIGUSR1, &sa, NULL) == -1) {
+    ft_printf("🚨 Error: cannot handle Signal SIGUSR1\n");
+    exit(1);
   }
+  if (sigaction(SIGUSR2, &sa, NULL) == -1) {
+    ft_printf("🚨 Error: cannot handle Signal SIGUSR2\n");
+    exit(1);
+  }
+
+  while (1)
+    pause();
 
   return (0);
 }

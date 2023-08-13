@@ -6,7 +6,7 @@
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/13 15:05:50 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/13 22:26:09 by azaaza           ###   ########.fr       */
+/*   Updated: 2023/08/14 00:26:19 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void send_signal(int *bits, int pid) {
     } else {
       kill(pid, SIGUSR2);
     }
-    usleep(500);
+    usleep(200);
     i++;
   }
   free(bits);

@@ -6,13 +6,38 @@
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 23:41:10 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/14 01:30:38 by azaaza           ###   ########.fr       */
+/*   Updated: 2023/08/14 02:06:00 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-static void *transform_and_send(int c, int pid) {
+void signal_handler(int sig, siginfo_t *siginfo, void *context) {
+  (void)context;
+  if (sig == ACKNOWLEDGE_SIG)
+    ft_printf("📨 Message received by server\n");
+  else {
+    ft_printf("🚨 There was an error while recieving acknowledgment from the "
+              "server \n");
+  }
+}
+
+void send_signal(int *bits, int pid) {
+  int i;
+  i = 0;
+  while (i < 8) {
+    if (bits[i] == 0) {
+      kill(pid, SIGUSR1);
+    } else {
+      kill(pid, SIGUSR2);
+    }
+    usleep(100);
+    i++;
+  }
+  free(bits);
+}
+
+void *transform_and_send(int c, int pid) {
   int *bits;
   int size;
   int letter;
@@ -28,21 +53,17 @@ static void *transform_and_send(int c, int pid) {
     size--;
   }
   int i = 0;
-  while (i < 8) {
-    ft_printf("%d", bits[i]);
-    i++;
-  }
-  ft_printf("\n");
   send_signal(bits, pid);
   return bits;
 }
 
 int main(int argc, char **argv) {
+  struct sigaction sa;
   pid_t pid;
   int i;
 
   if (argc != 3) {
-    ft_printf("Error: Wrong number of arguments\n");
+    ft_printf("Error: Wrong number of arguments, use ./client <server_pid> <your_message> \n");
     exit(1);
   }
   if (!is_numeric(argv[1])) {
@@ -50,6 +71,11 @@ int main(int argc, char **argv) {
     exit(1);
   }
   pid = ft_atoi(argv[1]);
+  sa.sa_sigaction = signal_handler;
+  if (sigaction(SIGUSR1, &sa, NULL) == -1) {
+    ft_printf("🚨 Error: cannot handle Signal SIGUSR1\n");
+    exit(1);
+  }
   i = 0;
   while (argv[2][i]) {
     transform_and_send(argv[2][i], pid);
@@ -57,6 +83,5 @@ int main(int argc, char **argv) {
   };
   transform_and_send('\n', pid);
   transform_and_send('\0', pid);
-
   return (0);
 }

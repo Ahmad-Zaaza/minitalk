@@ -6,7 +6,7 @@
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 22:33:15 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/14 01:35:06 by azaaza           ###   ########.fr       */
+/*   Updated: 2023/08/14 02:02:58 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 int byte = 0;
 
 void send_acknowledgement(int pid) {
-  if (kill(pid, SIGUSR1) == -1)
+  if (kill(pid, ACKNOWLEDGE_SIG) == -1) {
     ft_printf("🚨 Error: cannot send acknowledgement\n");
-  exit(1);
+    exit(1);
+  }
 }
 
 void handle_signal(int sig, siginfo_t *siginfo, void *context) {

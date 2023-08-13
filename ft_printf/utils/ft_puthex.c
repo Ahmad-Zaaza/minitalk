@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_puthex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/13 15:02:06 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/13 23:17:57 by azaaza           ###   ########.fr       */
+/*   Created: 2023/07/25 11:22:23 by azaaza            #+#    #+#             */
+/*   Updated: 2023/08/13 23:10:17 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
+#include "../include/ft_printf.h"
 
-#define MINITALK_H
+void ft_puthex(unsigned long n, int *count, char c) {
+  char *hex;
 
-#include "../ft_printf/include/ft_printf.h"
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-void send_signal(int *bits, int pid);
-
-#endif
+  if (c == 'x')
+    hex = "0123456789abcdef";
+  else
+    hex = "0123456789ABCDEF";
+  if (n > 15) {
+    ft_puthex(n / 16, count, c);
+  }
+  *count += ft_putchar(hex[n % 16]);
+}

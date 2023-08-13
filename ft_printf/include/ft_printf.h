@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/13 15:02:06 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/13 23:17:57 by azaaza           ###   ########.fr       */
+/*   Created: 2023/07/25 11:20:32 by azaaza            #+#    #+#             */
+/*   Updated: 2023/08/13 23:09:39 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
+#ifndef FT_PRINTF_H
 
-#define MINITALK_H
+#define FT_PRINTF_H
 
-#include "../ft_printf/include/ft_printf.h"
-#include <signal.h>
-#include <stdlib.h>
+#include <stdarg.h>
 #include <unistd.h>
 
-void send_signal(int *bits, int pid);
+int ft_printf(const char *str, ...);
+
+void ft_parse(char c, va_list *args, int *count);
+
+int ft_putchar(char c);
+int ft_putstr(char *s);
+void ft_putnbr(int n, int *count);
+void ft_putunbr(unsigned int n, int *count);
+void ft_puthex(unsigned long n, int *count, char c);
+int ft_putmem(unsigned long n);
 
 #endif

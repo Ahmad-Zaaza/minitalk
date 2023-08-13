@@ -6,28 +6,39 @@
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/10 23:41:10 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/13 15:20:44 by azaaza           ###   ########.fr       */
+/*   Updated: 2023/08/13 23:15:39 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-void send_signal(int *bits, int pid) {
+static int ft_atoi(const char *str) {
+  long int result;
+  long int old_result;
   int i;
+  int sign;
+
+  result = 0;
   i = 0;
-  while (i < 8) {
-    if (bits[i] == 0) {
-      kill(pid, SIGUSR1);
-    } else {
-      kill(pid, SIGUSR2);
-    }
-    usleep(500);
+  sign = 1;
+  while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
     i++;
+  if (str[i] == 45)
+    sign = -1;
+  i += (str[i] == '-' || str[i] == '+');
+  while (str[i] >= '0' && str[i] <= '9') {
+    old_result = result;
+    result = (result * 10) + (str[i++] - 48);
+    if (old_result > result) {
+      if (sign < 0)
+        return (0);
+      return (-1);
+    }
   }
-  free(bits);
+  return (result * sign);
 }
 
-void *transform_and_send(int c, int pid) {
+static void *transform_and_send(int c, int pid) {
   int *bits;
   int size;
   int letter;
@@ -42,13 +53,13 @@ void *transform_and_send(int c, int pid) {
     letter = letter >> 1;
     size--;
   }
+  int i = 0;
+  while (i < 8) {
+    ft_printf("%d", bits[i]);
+    i++;
+  }
+  ft_printf("\n");
   send_signal(bits, pid);
-  // int i = 0;
-  // while (i < 8) {
-  //   printf("%d", bits[i]);
-  //   i++;
-  // }
-  // printf("\n");
   return bits;
 }
 
@@ -75,17 +86,15 @@ int main(int argc, char **argv) {
   int i;
 
   if (argc != 3) {
-    printf("Error: Wrong number of arguments\n");
+    ft_printf("Error: Wrong number of arguments\n");
     exit(1);
   }
-  pid = atoi(argv[1]);
+  pid = ft_atoi(argv[1]);
   i = 0;
   while (argv[2][i]) {
     transform_and_send(argv[2][i], pid);
     i++;
   };
 
-  // signal = SIGUSR1;
-  // kill(pid, signal);
   return (0);
 }

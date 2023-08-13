@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/13 15:02:06 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/13 23:17:57 by azaaza           ###   ########.fr       */
+/*   Created: 2023/07/25 11:21:54 by azaaza            #+#    #+#             */
+/*   Updated: 2023/08/13 23:10:17 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
+#include "../include/ft_printf.h"
 
-#define MINITALK_H
+int ft_putstr(char *str) {
+  int i;
 
-#include "../ft_printf/include/ft_printf.h"
-#include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-void send_signal(int *bits, int pid);
-
-#endif
+  if (!str) {
+    ft_putstr("(null)");
+    return (6);
+  }
+  i = 0;
+  while (str[i])
+    ft_putchar(str[i++]);
+  return (i);
+}

@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
+/*   By: azaaza <azaaza@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 11:21:54 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/13 23:10:17 by azaaza           ###   ########.fr       */
+/*   Updated: 2023/08/15 19:47:34 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ft_printf.h"
 
-int ft_putstr(char *str) {
-  int i;
+int	ft_putstr(char *str)
+{
+	int	i;
 
-  if (!str) {
-    ft_putstr("(null)");
-    return (6);
-  }
-  i = 0;
-  while (str[i])
-    ft_putchar(str[i++]);
-  return (i);
+	if (!str)
+	{
+		ft_putstr("(null)");
+		return (6);
+	}
+	i = 0;
+	while (str[i])
+		ft_putchar(str[i++]);
+	return (i);
 }

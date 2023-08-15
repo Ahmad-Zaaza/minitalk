@@ -6,13 +6,13 @@
 /*   By: azaaza <azaaza@student.42abudhabi.ae>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 00:41:40 by azaaza            #+#    #+#             */
-/*   Updated: 2023/08/14 00:44:46 by azaaza           ###   ########.fr       */
+/*   Updated: 2023/08/14 02:10:32 by azaaza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
 
-int is_digit(char c) { return (c >= '0' && c <= '9'); }
+static int is_digit(char c) { return (c >= '0' && c <= '9'); }
 
 int is_numeric(const char *str) {
   if (!*str)
